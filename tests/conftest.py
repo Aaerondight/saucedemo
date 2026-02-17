@@ -1,10 +1,10 @@
 from playwright.sync_api import Playwright
-from dotenv import load_dotenv
 import pytest
 import os
-
-# Load .env file at the start
-load_dotenv()
+from dotenv import load_dotenv
+load_dotenv() #needs to be before importing USERS and PASSWORD
+from pages.login import Login
+from  utils.users import USERS, PASSWORD
 
 @pytest.fixture(scope="session")
 def browser(playwright: Playwright):
@@ -20,3 +20,12 @@ def set_up_context(browser):
     yield page
     context.close()
 
+@pytest.fixture(scope="function")
+def standard_user(browser):
+    context = browser.new_context()
+    page = context.new_page()
+    page.goto(os.getenv("BASE_URL"))
+    login = Login(page)
+    login.login(USERS["standard"], PASSWORD)
+    yield page
+    context.close()
