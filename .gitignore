@@ -3,6 +3,5 @@ tests/__pycache__
 pages/__pycache__
 utils/__pycache__
 tests/ui_tests/__pycache__
-tests/ui_tests/snapshots
 tests/ui_tests/snapshot_tests_failures
 reports
