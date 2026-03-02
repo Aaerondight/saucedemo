@@ -3,3 +3,6 @@ List of Python dependencies
 playwright
 pytest
 pytest-xdist
+pytest-timeout
+allure-pytest
+python-dotenv

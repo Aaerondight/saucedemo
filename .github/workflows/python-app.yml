@@ -30,6 +30,8 @@ jobs:
         python -m pip install playwright
         python -m pip install python-dotenv
         python -m pip install allure-pytest
+        python -m pip install pytest-xdist
+        python -m pip install pytest-timeout
     - name: Install chromium 
       run: |
         python -m playwright install chromium
