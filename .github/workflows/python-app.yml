@@ -29,7 +29,7 @@ jobs:
         pip install flake8 pytest-playwright
         python -m pip install playwright
         python -m pip install python-dotenv
-        python -m pip install allure
+        python -m pip install allure-pytest
     - name: Install chromium 
       run: |
         python -m playwright install chromium
