@@ -1,10 +1,9 @@
 from playwright.sync_api import Playwright
-import pytest
 import os
+import pytest
 from dotenv import load_dotenv
+import allure
 load_dotenv() #needs to be before importing USERS and PASSWORD
-from pages.login import Login
-from  utils.users import USERS, PASSWORD
 
 @pytest.fixture(scope="session")
 def browser(playwright: Playwright):
@@ -20,12 +19,25 @@ def set_up_context(browser):
     yield page
     context.close()
 
-@pytest.fixture(scope="function")
-def standard_user(browser):
-    context = browser.new_context()
-    page = context.new_page()
-    page.goto(os.getenv("BASE_URL"))
-    login = Login(page)
-    login.login(USERS["standard"], PASSWORD)
-    yield page
-    context.close()
+@pytest.hookimpl(hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    outcome = yield
+    rep = outcome.get_result()
+
+    if rep.when == "call":  # only after test body finishes
+        page = item.funcargs.get("set_up_context")
+        if page:
+            screenshot = page.screenshot()
+            
+            if rep.failed:
+                allure.attach(
+                    screenshot,
+                    name="failure-screenshot",
+                    attachment_type=allure.attachment_type.PNG
+                )
+            elif rep.passed:
+                allure.attach(
+                    screenshot,
+                    name="success-screenshot",
+                    attachment_type=allure.attachment_type.PNG
+                )
