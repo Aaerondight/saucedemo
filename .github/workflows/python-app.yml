@@ -53,4 +53,4 @@ jobs:
         VISUAL_USER: ${{ secrets.VISUAL_USER }}
         PASSWORD: ${{ secrets.PASSWORD }}
       run: |
-        pytest
+        pytest --update-snapshots

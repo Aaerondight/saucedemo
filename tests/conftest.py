@@ -7,7 +7,7 @@ load_dotenv() #needs to be before importing USERS and PASSWORD
 
 @pytest.fixture(scope="session")
 def browser(playwright: Playwright):
-    browser = playwright.chromium.launch(headless=False, slow_mo=500)
+    browser = playwright.chromium.launch(headless=True)
     yield browser
     browser.close()
 
