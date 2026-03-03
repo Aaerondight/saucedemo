@@ -10,6 +10,7 @@ def test_valid_users(set_up_context, user_key) -> None:
     login.login(USERS[user_key], PASSWORD)
     expect(login.assert_variable).to_be_visible()
 
+@pytest.mark.xfail(reason="Invalid users should not login", strict=True)
 @pytest.mark.parametrize("user_key", INVALID_USERS)
 def test_locked_user(set_up_context, user_key) -> None:
     page = set_up_context

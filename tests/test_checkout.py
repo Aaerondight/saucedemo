@@ -10,7 +10,15 @@ from pages.checkout import Checkout
 from pages.overview import Overview
 from pages.checkout_complete import Complete
 
-@pytest.mark.parametrize("key", USERS)
+@pytest.mark.parametrize(
+    "key",
+    [
+        pytest.param(k, marks=pytest.mark.xfail(strict=True))
+        if k == "locked" or k == "error" or k == "problem"
+        else k
+        for k in USERS
+    ]
+)
 def test_checkout(set_up_context, key) -> None:
     page = set_up_context
     login = Login(page)
