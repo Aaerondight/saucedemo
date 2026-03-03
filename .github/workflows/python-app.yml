@@ -10,7 +10,7 @@ on:
     branches: [ "main" ]
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
@@ -19,6 +19,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+      with:
+        persist-credentials: true
     - name: Set up Python 3.10
       uses: actions/setup-python@v3
       with:
@@ -50,5 +52,13 @@ jobs:
         ERROR_USER: ${{ secrets.ERROR_USER }}
         VISUAL_USER: ${{ secrets.VISUAL_USER }}
         PASSWORD: ${{ secrets.PASSWORD }}
+      run: pytest
+
+    - name: Commit updated snapshots
       run: |
-        pytest --update-snapshots
+        git config --global user.name "github-actions"
+        git config --global user.email "github-actions@github.com"
+        git add .
+        git commit -m "Update snapshots from CI" || echo "No changes to commit"
+        git push
+      
