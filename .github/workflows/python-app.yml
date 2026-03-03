@@ -53,7 +53,7 @@ jobs:
         ERROR_USER: ${{ secrets.ERROR_USER }}
         VISUAL_USER: ${{ secrets.VISUAL_USER }}
         PASSWORD: ${{ secrets.PASSWORD }}
-      run: pytest
+      run: pytest --update-snapshots
 
     - name: Commit updated snapshots
       if: always()
