@@ -2,12 +2,15 @@ from playwright.sync_api import Playwright
 import os
 import pytest
 from dotenv import load_dotenv
-import allure
+#import allure
+from pathlib import Path
+from datetime import datetime
+from pytest_html import extras
 load_dotenv() #needs to be before importing USERS and PASSWORD
 
 @pytest.fixture(scope="session")
 def browser(playwright: Playwright):
-    browser = playwright.chromium.launch(headless=True)
+    browser = playwright.chromium.launch(headless=False)
     yield browser
     browser.close()
 
@@ -19,25 +22,26 @@ def set_up_context(browser):
     yield page
     context.close()
 
-@pytest.hookimpl(hookwrapper=True)
-def pytest_runtest_makereport(item, call):
-    outcome = yield
-    rep = outcome.get_result()
+#manage report path
+def pytest_configure(config):
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    config.option.htmlpath = f"reports/report_{timestamp}.html"
 
-    if rep.when == "call":  # only after test body finishes
-        page = item.funcargs.get("set_up_context")
-        if page:
-            screenshot = page.screenshot()
-            
-            if rep.failed:
-                allure.attach(
-                    screenshot,
-                    name="failure-screenshot",
-                    attachment_type=allure.attachment_type.PNG
-                )
-            elif rep.passed:
-                allure.attach(
-                    screenshot,
-                    name="success-screenshot",
-                    attachment_type=allure.attachment_type.PNG
-                )
+@pytest.hookimpl(hookwrapper=True)
+def pytest_runtest_makereport(item):
+    outcome = yield
+    report = outcome.get_result()
+
+    if report.when == "call":
+
+        page = item.funcargs["set_up_context"]
+
+        screenshots_dir = Path("screenshots")
+        screenshots_dir.mkdir(exist_ok=True)
+
+        file_path = screenshots_dir / f"{item.name}.png"
+        page.screenshot(path=str(file_path), full_page=True)
+
+        extras_list = getattr(report, "extras", [])
+        extras_list.append(extras.image(f"../{file_path}"))
+        report.extras = extras_list
