@@ -27,11 +27,6 @@ jobs:
       with:
         python-version: "3.10"
         cache: pip
-    - name: Cache Playwright browsers
-      uses: actions/cache@v4
-      with:
-        path: ~/.cache/ms-playwright
-        key: playwright-${{ runner.os }}
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
@@ -41,6 +36,11 @@ jobs:
         python -m pip install pytest-xdist
         python -m pip install pytest-playwright-visual
         python -m pip install pytest-html
+    - name: Cache Playwright browsers
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/ms-playwright
+        key: playwright-${{ runner.os }}
     - name: Install chromium 
       run: |
         python -m playwright install chromium
