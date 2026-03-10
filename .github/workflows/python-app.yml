@@ -63,4 +63,11 @@ jobs:
         git add .
         git commit -m "Update snapshots from CI" || echo "No changes to commit"
         git push
-      
+    
+    - name: Upload test report 
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-report
+        path: |
+          reports/
+          screenshots/
