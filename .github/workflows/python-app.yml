@@ -39,7 +39,7 @@ jobs:
     - name: Cache Playwright browsers
       uses: actions/cache@v4
       with:
-        path: ~/.cache/ms-playwright
+        path: ~\AppData\Local\ms-playwright
         key: playwright-${{ runner.os }}
     - name: Install chromium 
       run: |
