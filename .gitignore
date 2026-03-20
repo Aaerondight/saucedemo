@@ -7,3 +7,4 @@ tests/ui_tests/snapshots
 tests/ui_tests/snapshot_tests_failures
 reports
 screenshots
+*.idea
