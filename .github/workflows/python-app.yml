@@ -70,6 +70,7 @@ jobs:
           reports/
           screenshots/
     - name: Upload UI snapshows
+      if: always()
       uses: actions/upload-artifact@v4
       with:
         name: snapshot
