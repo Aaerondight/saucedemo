@@ -3,7 +3,7 @@ from utils.users import USERS, PASSWORD
 from pages.cart import Cart
 import pytest
 
-@pytest.mark.skip
+#@pytest.mark.skip
 def test_shop_page_ui(set_up_context, assert_snapshot):
     page = set_up_context
     login = Login(page)

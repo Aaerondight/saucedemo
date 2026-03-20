@@ -78,3 +78,10 @@ jobs:
         path: |
           reports/
           screenshots/
+    - name: Upload UI snapshows
+      uses: actions/upload-artifact@v4
+      with:
+        name: snapshot
+        path: |
+          tests/ui_tests/snapshots/
+
