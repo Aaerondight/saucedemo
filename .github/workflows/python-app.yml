@@ -80,5 +80,5 @@ jobs:
       with:
         name: snapshot
         path: |
-          tests/ui_tests/snapshots/
+          tests/ui_tests/snapshot/
 
